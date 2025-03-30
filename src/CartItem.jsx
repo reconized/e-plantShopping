@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
@@ -6,6 +6,7 @@ import './CartItem.css';
 const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
@@ -36,6 +37,17 @@ const CartItem = ({ onContinueShopping }) => {
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
     return (Number(item.cost.substring(1)) * item.quantity).toFixed(2);
+  };
+
+  // Handle checkout button click
+  const handleCheckoutShopping = (e) => {
+    e.preventDefault();
+    setShowModal(true); // Show the modal
+  };
+
+  // Close the modal
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -82,8 +94,23 @@ const CartItem = ({ onContinueShopping }) => {
           Continue Shopping
         </button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button className="get-started-button1" onClick={(e) => handleCheckoutShopping(e)}>
+          Checkout
+        </button>
       </div>
+
+      {/* Modal Overlay */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Checkout</h2>
+            <p>Functionality to be added for future reference.</p>
+            <button className="modal-close-button" onClick={handleCloseModal}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
